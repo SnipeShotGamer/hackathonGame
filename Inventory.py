@@ -4,6 +4,10 @@ class Inventory:
 
   @classmethod
   def Init(cls):
+    if (cls.__inited):
+      return
+
+    cls.__inited = True
     cls.__items = []
     cls.__opened = False
     cls.__armor = []
@@ -19,3 +23,8 @@ class Inventory:
   @classmethod
   def Close(cls):
     cls.__opened = False
+
+  @classmethod
+  def Reset(cls):
+    cls.__inited = False
+    cls.Init()
