@@ -13,9 +13,9 @@ class Inventory:
     return cls.__opened
 
   @classmethod
-  def Open():
+  def Open(cls):
     cls.__opened = True
 
   @classmethod
-  def Close():
+  def Close(cls):
     cls.__opened = False
