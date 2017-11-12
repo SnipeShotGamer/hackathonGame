@@ -12,7 +12,7 @@ class Display:
 
     cls.__caption = caption
     cls.__size = size
-    cls.__display = pygame.display.set_mode(size)
+    cls.__display = pygame.display.set_mode(size, pygame.HWSURFACE)
 
   @classmethod
   def SetSize(cls, size):
@@ -43,8 +43,8 @@ class Display:
     return cls.__caption
 
   @classmethod
-  def Update(cls, rect = None):
-    pygame.display.update(rect)
+  def Update(cls):
+    pygame.display.update()
 
   @classmethod
   def Reset(cls, size = (640, 480)):

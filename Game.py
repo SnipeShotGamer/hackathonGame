@@ -94,7 +94,7 @@ class Game:
   def Draw(self):
     for obj in self.__gameObjects:
       obj.Draw()
-      Display.Update()
+    Display.Update()
 
   def CheckCollisions(self):
     objs = self.__gameObjects
