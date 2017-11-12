@@ -1,18 +1,20 @@
 import pygame
 from Clock import Clock
 from Inventory import Inventory
+from Config import Config
 
 pygame.init()
 
 class Game:
   def __init__(self):
+    Config.Init()
+
     # TODO move to class
     pygame.display.set_mode()
     w, h = pygame.display.get_surface().get_size()
     self.screen = pygame.display.set_mode((w, h))
 
-    # TODO get from config (probably within displaying class)
-    pygame.display.set_caption("")
+    pygame.display.set_caption(Config.Get("GameSettings")["Caption"])
 
     self.Clock = Clock().SetTick(60)
 
