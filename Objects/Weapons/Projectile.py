@@ -1,13 +1,13 @@
 import pygame
-from EventEmitter import EventEmitter
-from EventWatcher import EventWatcher
+import GameObject
 
-class Projectile(EventWatcher, pygame.sprite.Sprite):
-	def __init__(self, pos, vel, size, texture):
+class Projectile(GameObject, pygame.sprite.Sprite):
+	def __init__(self, pos, vel, size, texture, damage):
 		self.vel = vel
 		self.pos = pos
 		self.size = size
 		self.texture = texture
+		self.damage = damage
 
 	def Draw(self):
 		pygame.draw.rect(self.texture, (255,255,255), [self.pos[0], self.pos[1], self.size, self.size])
