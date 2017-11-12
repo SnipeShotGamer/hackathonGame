@@ -1,6 +1,8 @@
-class Inventory:
+import json
+
+class Config:
   __inited = False
-  
+
   def __init__(self):
     raise NotImplementedError('This is a singleton. It may not be instantiated. Used "Init" instead, doofus.')
 
@@ -9,24 +11,15 @@ class Inventory:
     if (cls.__inited):
       return
 
+    configFile = open('config.json', 'r')
+    cls.__data = json.load(configFile)
     cls.__inited = True
-    cls.__items = []
-    cls.__opened = False
-    cls.__armor = []
 
   @classmethod
-  def Opened(cls):
-    return cls.__opened
+  def Get(cls, key):
+    return cls.__data[key]
 
   @classmethod
-  def Open(cls):
-    cls.__opened = True
-
-  @classmethod
-  def Close(cls):
-    cls.__opened = False
-
-  @classmethod
-  def Reset(cls):
-    cls.__inited = False
+  def Reset(cls, key):
+    cls.__inited
     cls.Init()
