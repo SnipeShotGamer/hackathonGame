@@ -32,4 +32,7 @@ class Clock:
   def Tick(self):
     self.__clock.tick(self.__tick)
 
-    return self
+    return 
+
+  def GetFps(self):
+    return self.__clock.get_fps()
