@@ -1,23 +1,19 @@
 import pygame
-from EventEmitter import EventEmitter
+
+pygame.init()
 
 class Game:
-  def __init__(self, _ee, _ew):
-    pygame.init()
-
+  def __init__(self):
     # TODO move to class
     pygame.display.set_mode()
     w, h = pygame.display.get_surface().get_size()
-    pygame.display.set_mode((w, h))
+    self.screen = pygame.display.set_mode((w, h))
 
     # TODO get from config (probably within displaying class)
     pygame.display.set_caption("")
 
     # TODO move to class
     self.clock = pygame.time.Clock()
-
-    self._eventEmitter = _ee
-    self._eventWatcher = _ew
 
     self.Start()
 
@@ -27,6 +23,8 @@ class Game:
         if event.type == pygame.QUIT:
           self.Quit()
 
+      keys = pygame.key.get_pressed()
+
       pygame.display.update()
       self.clock.tick(60)
 
@@ -34,4 +32,4 @@ class Game:
     pygame.quit()
     quit()
 
-game = Game(None, None)
+game = Game()
