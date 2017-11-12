@@ -1,17 +1,31 @@
 from Contracts import InstanceOf
 
 class EventEmitter:
-  def __init__(self, parents, children):
-    self._parents = parents
-    self._children = children
+  def __init__(self, facing):
+    self.__parents = []
+    self.__children = []
 
   def Emit(self, event):
-    for parent in self._parents:
+    InstanceOf(event, EventEmitter)
+
+    for parent in self.__parents:
       InstanceOf(parent, EventEmitter)
       parent.emit(event)
 
-    return event
+    self.__events.append(event)
 
-  def AddChild(self, child):
-    InstanceOf(child, EventEmitter)
-    self._children.append(child)
+  def AddChildren(self, *children):
+    for child in children:
+      InstanceOf(child, EventEmitter)
+      self._children.append(child)
+
+  def AddParents(self, *parents):
+    for parent in parents:
+      InstanceOf(parent, EventEmitter)
+      self.__parents.append(parent)
+
+  def GetEvents(self):
+    return self.__events
+
+  def ResetEvents(self):
+    self.__events = []
