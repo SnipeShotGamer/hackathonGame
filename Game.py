@@ -2,19 +2,18 @@ import pygame
 from Clock import Clock
 from Inventory import Inventory
 from Config import Config
+from Display import Display
 
 pygame.init()
 
 class Game:
   def __init__(self):
     Config.Init()
+    Display.Init()
 
-    # TODO move to class
-    pygame.display.set_mode()
-    w, h = pygame.display.get_surface().get_size()
-    self.screen = pygame.display.set_mode((w, h))
+    self.screen = Display.GetDisplay()
 
-    pygame.display.set_caption(Config.Get("GameSettings")["Caption"])
+    Display.SetCaption(Config.Get("GameSettings")["Caption"])
 
     self.Clock = Clock().SetTick(60)
 
@@ -28,7 +27,7 @@ class Game:
 
       keys = pygame.key.get_pressed()
 
-      pygame.display.update()
+      Display.Update()
       self.Clock.Tick()
 
   def Quit(self):

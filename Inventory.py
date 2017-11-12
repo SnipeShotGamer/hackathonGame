@@ -1,4 +1,6 @@
 class Inventory:
+  __inited = False
+  
   def __init__(self):
     raise NotImplementedError('This is a singleton. It may not be instantiated. Used "Init" instead, doofus.')
 
