@@ -1,5 +1,6 @@
 {
   "GameSettings": {
-    "Caption": "BulletH"
+    "Caption": "BulletH",
+    "Fps": 60
   }
 }
