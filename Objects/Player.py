@@ -1,113 +1,124 @@
 import pygame
-import GameObject
+from Objects import GameObject
+from Inventory import Inventory
+from Config import Config
+from Display import Display
 
-class Player(Sprite, GameObject):
+class PlayerStats():
+	def __init__(self, health, level):
+		self.__health = health
+		self.__level = level
+
+	def Damage(self, hp):
+		self.__health -= hp
+
+	def Heal(self, hp):
+		self.__health += hp
+
+	def HealAll(self):
+		self.__health = 100
+
+class Player(GameObject.GameObject):
+	def __init__(self, x, y, width, height, stats):
+		super().__init__(x, y, width, height)
+		self.stats = stats
 
 class PlayerO(Player):
 	UP = 0
 	RIGHT = 1
 	DOWN = 2
 	LEFT = 3
-	def __init__(self, pos, size, texture, health, facing = UP):
+
+	def __init__(self, pos, size, texture, stats, multiplier = 1, facing = UP):
+		super().__init__(pos[0], pos[1], size[0], size[1], stats)
+
 		self.pos = pos
 		self.size = size
 		self.texture = texture
-		self.health = health
 		self.facing = facing
-		self.inventoryOpen = False
+		self.multiplier = multiplier
+
+	def CanMove(self, gameState):
+		return not Inventory.Opened() and gameState.GetGameState() == GameState.PLAYING
 
 	def Update(self):
 		keys = pygame.key.get_pressed()
+
 		for key in keys:
-			if(not Inventory.Opened)	
-				if(key == pygame.key.K_w):
-					self.pos[1] -= 5
+			if (self.CanMove()):
+				if (key == pygame.K_w):
+					self.pos[1] -= 5 * self.multiplier
 					self.facing = UP
 
-				if(key == pygame.key.K_s):
-					self.pos[1] += 5
+				if(key == pygame.K_s):
+					self.pos[1] += 5 * self.multiplier
 					self.facing = DOWN
 
-				if(key == pygame.key.K_a):
-					self.pos[0] -= 5
+				if(key == pygame.K_a):
+					self.pos[0] -= 5 * self.multiplier
 					self.facing = LEFT
 
-				if(key == pygame.key.K_d):
-					self.pos[0] += 5
+				if(key == pygame.K_d):
+					self.pos[0] += 5 * self.multiplier
 					self.facing = RIGHT
-				if(key == pygame.key.k_e):
-						Inventory.Open()
-			else if(key == pygame.key.k_e):
-				Inventory.Close()
-
-	def Draw(self):
-
 
 class PlayerS(Player):
+	Config.Init()
+
+	SPRITE_WIDTH = 16
+	SPRITE_HEIGHT = 16
+	SPRITE_SHEET_PATH = Config.Get("ResourcePath") 
+	SPRITE_SHEET = pygame.image.load(SPRITE_SHEET_PATH)
+	SPRITE_SHEET.set_clip(pygame.Rect(0, 0, SPRITE_WIDTH, SPRITE_HEIGHT))
+
+	MAX_VELOCITY_WALKING = 20
+	MAX_VELOCITY_RUNNING = 30
+
 	RIGHT = 0
 	LEFT = 1
 
-	def __init__(self, pos, vel, size, texture, health, facing = RIGHT):
+	def __init__(self, pos, vel, size, stats, multiplier = 1, facing = RIGHT):
+		super().__init__(pos[0], pos[1], size[0], size[1], stats)
+
+		Display.Init()
+
 		self.pos = pos
 		self.vel = vel
 		self.size = size
-		self.texture = texture
 		self.facing = facing
-		self.health = health
-		self.acc = (0, -2)
-		self.maxVel = 20
-		self.keyPressedX = False
-		self.grounded = True
-		self.moveLeft = True
-		self.moveRight = True
+		self.maxVel = PlayerS.MAX_VELOCITY_WALKING
+
+		self.multiplier = multiplier
+
+		self.landed = True
 
 	def Update(self):
 		keys = pygame.key.get_pressed()
 
-		if(pygame.key.K_a in keys and pygame.key.K_d in keys):
-			self.keyPressedX = False
-
 		for key in keys:
-			if(key == pygame.key.K_SPACE):
-				if(grounded):
-					self.vel[1] += 20
+			if (key == pygame.key.K_SPACE):
+				if (self.landed):
+					self.vel[1] += 20 * self.multiplier
 
 			if(key == pygame.key.K_a):
-				self.vel[0] -= 5
+				self.vel[0] -= 5 * self.multiplier
 
 			if(key == pygame.key.K_d):
-				self.vel[0] += 5
-
-			if(key == pygame.key.K_LCTRL):
-				self.size[1] = 30
-				self.maxVel = 5
-				#TODO: change sprite to crouching sprite
+				self.vel[0] += 5 * self.multiplier
 
 			if(key == pygame.key.K_LSHIFT):
-				self.maxVel = 30
+				self.maxVel = MAX_VELOCITY_RUNNING
 
-		if(self.vel[0] < 0):
+		if (self.vel[0] < 0):
 			self.facing = LEFT
-		if(self.vel[0] > 0):
+
+		if (self.vel[0] > 0):
 			self.facing = RIGHT
-		if(not self.keyPressedX):
-			if(self.vel[0] > 20):
-				self.acc[0] = -2
-			else:
-				self.vel[0] = 0
 
-		if(abs(self.acc[0]) > abs(self.vel[0])):
-			self.vel[0] = 0
-		else:
-			self.vel[0] += self.acc[0]
-
-		if(not grounded):
-			if(abs(acc[1]) > abs(vel[1])):
-				self.vel[1] = 0
-			else:
-				self.vel[1] += self.acc[1]
-
-	def Draw(self):
+	def Draw(self):		
+		display = Display.GetDisplay()
+		player = PlayerS.SPRITE_SHEET.subsurface(PlayerS.SPRITE_SHEET.get_clip())
+		display.blit(player, (50, 50))
 		
 	def Collides(self, collideObj, collisionState):
 		if(instanceof(collideObj, WorldObject)):
