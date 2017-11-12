@@ -14,25 +14,31 @@ class PlayerO(Player):
 		self.texture = texture
 		self.health = health
 		self.facing = facing
+		self.inventoryOpen = False
 
 	def Update(self):
 		keys = pygame.key.get_pressed()
 		for key in keys:
-			if(key == pygame.key.K_w):
-				pos[1] -= 5
-				self.facing = UP
+			if(not Inventory.Opened)	
+				if(key == pygame.key.K_w):
+					self.pos[1] -= 5
+					self.facing = UP
 
-			if(key == pygame.key.K_a):
-				pos[0] -= 5
-				self.facing = LEFT
+				if(key == pygame.key.K_s):
+					self.pos[1] += 5
+					self.facing = DOWN
 
-			if(key == pygame.key.K_s):
-				pos[1] += 5
-				self.facing = DOWN
+				if(key == pygame.key.K_a):
+					self.pos[0] -= 5
+					self.facing = LEFT
 
-			if(key == pygame.key.K_d):
-				pos[0] += 5
-				self.facing = RIGHT
+				if(key == pygame.key.K_d):
+					self.pos[0] += 5
+					self.facing = RIGHT
+				if(key == pygame.key.k_e):
+						Inventory.Open()
+			else if(key == pygame.key.k_e):
+				Inventory.Close()
 
 	def Draw(self):
 
@@ -84,7 +90,7 @@ class PlayerS(Player):
 			self.facing = LEFT
 		if(self.vel[0] > 0):
 			self.facing = RIGHT
-		if(!self.keyPressedX):
+		if(not self.keyPressedX):
 			if(self.vel[0] > 20):
 				self.acc[0] = -2
 			else:
@@ -95,7 +101,7 @@ class PlayerS(Player):
 		else:
 			self.vel[0] += self.acc[0]
 
-		if(!grounded):
+		if(not grounded):
 			if(abs(acc[1]) > abs(vel[1])):
 				self.vel[1] = 0
 			else:
