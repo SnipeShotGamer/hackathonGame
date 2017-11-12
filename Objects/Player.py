@@ -109,7 +109,7 @@ class PlayerS(Player):
 
 	def Draw(self):
 		
-	def Collides(self, collideObj):
+	def Collides(self, collideObj, collisionState):
 		if(instanceof(collideObj, WorldObject)):
 			self.grounded = true
 		if(instanceof(collideObj, Projectile)):

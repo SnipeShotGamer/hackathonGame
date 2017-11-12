@@ -16,7 +16,7 @@ class Projectile(GameObject, pygame.sprite.Sprite):
 		self.pos[0] + self.vel[0]
 		self.pos[1] - self.vel[1]
 
-	def Collides(self, collideObj):
+	def Collides(self, collideObj, collisionState):
 		if(instanceof(collideObj, Player)):
 			self.Emit("delete")
 		else if(instanceof(collideObj, WorldObject)):
