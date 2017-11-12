@@ -1,23 +1,31 @@
 import pygame
+
 from Clock import Clock
 from Inventory import Inventory
 from Config import Config
 from Display import Display
-
-pygame.init()
+from Objects import GameObject
+from Contracts import InstanceOf
 
 class Game:
   def __init__(self):
+    pygame.init()
+
     Config.Init()
     Display.Init()
 
-    self.screen = Display.GetDisplay()
+    self.__screen = Display.GetDisplay()
 
     Display.SetCaption(Config.Get("GameSettings")["Caption"])
 
     self.Clock = Clock().SetTick(60)
 
-    self.Start()
+    self.__gameObjects = []
+
+  def AddGameObjects(self, *objects):
+    for obj in objects:
+      InstanceOf(obj, GameObject.GameObject)
+      self.__gameObjects.append(obj)
 
   def Start(self):
     while True:
@@ -27,11 +35,13 @@ class Game:
 
       keys = pygame.key.get_pressed()
 
-      Display.Update()
       self.Clock.Tick()
+
+    Display.Update()
+
+  def CheckCollisions(self):
+    self.x = 0
 
   def Quit(self):
     pygame.quit()
     quit()
-
-game = Game()
