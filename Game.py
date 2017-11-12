@@ -1,4 +1,6 @@
 import pygame
+from Clock import Clock
+from Inventory import Inventory
 
 pygame.init()
 
@@ -12,8 +14,7 @@ class Game:
     # TODO get from config (probably within displaying class)
     pygame.display.set_caption("")
 
-    # TODO move to class
-    self.clock = pygame.time.Clock()
+    self.Clock = Clock().SetTick(60)
 
     self.Start()
 
@@ -26,7 +27,7 @@ class Game:
       keys = pygame.key.get_pressed()
 
       pygame.display.update()
-      self.clock.tick(60)
+      self.Clock.Tick()
 
   def Quit(self):
     pygame.quit()
